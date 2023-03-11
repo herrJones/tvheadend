@@ -76,6 +76,7 @@ OPTIONS=(
   "cclang_threadsan:no"
   "gperftools:no"
   "execinfo:auto"
+  "jetsonnano:no"
 )
 
 #
@@ -634,6 +635,27 @@ if enabled ffmpeg_static; then
     check_cc_header OMX_Core omx || die "OpenMAX IL not found"
   fi
 
+    # jetsonnano
+  # requires ffmpeg build patched to run on NVidia Jetson Nano hardware
+  # eg: https://github.com/LinusCDE/mad-jetson-ffmpeg
+  if enabled jetsonnano; then
+    #echo "configuring for NVidia Jetson Nano"
+    OLDFLAGS=$LDFLAGS
+
+    PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
+    if check_pkg nvmpi ">=1.0.0"; then
+      enable nvmpi
+
+      CFLAGS="-I/usr/local/include -I/usr/src/jetson_multimedia_api/include/ $CFLAGS"
+      LDFLAGS="-L/usr/local/lib -lnvmpi -L/usr/lib/aarch64-linux-gnu/tegra -lnvbuf_utils $OLDFLAGS"
+    else
+      die "NVidia NVMPI acceleration library not found"
+    fi
+
+  else
+    disable nvmpi
+  fi
+
 else
 
   if enabled_or_auto libav; then
@@ -657,6 +679,27 @@ else
       fi
     fi
 
+  fi
+
+  # jetsonnano
+  # requires ffmpeg build patched to run on NVidia Jetson Nano hardware
+  # eg: https://github.com/LinusCDE/mad-jetson-ffmpeg
+  if enabled jetsonnano; then
+    #echo "configuring for NVidia Jetson Nano"
+    OLDFLAGS=$LDFLAGS
+
+    PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
+    if check_pkg nvmpi ">=1.0.0"; then
+      enable nvmpi
+
+      CFLAGS="-I/usr/local/include -I/usr/src/jetson_multimedia_api/include/ $CFLAGS"
+      LDFLAGS="-L/usr/local/lib -lnvmpi -L/usr/lib/aarch64-linux-gnu/tegra -lnvbuf_utils $OLDFLAGS"
+    else
+      die "NVidia NVMPI acceleration library not found"
+    fi
+
+  else
+    disable nvmpi
   fi
 
 fi
