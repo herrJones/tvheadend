@@ -113,7 +113,6 @@ FFMPEG_TB      = $(FFMPEG).tar.bz2
 FFMPEG_URL     = https://ffmpeg.org/releases/$(FFMPEG_TB)
 FFMPEG_SHA1    = a900f77ed16a18421983b499114c1595b8b765f2
 
-
 # ##############################################################################
 # Library Config
 # ##############################################################################
@@ -605,6 +604,24 @@ endif
 
 
 # ##############################################################################
+# NVMPI
+#
+
+ifeq ($(CONFIG_JETSONNANO),yes)
+
+EXTLIBS += nvmpi
+ENCODERS  += h264_nvmpi hevc_nvmpi
+DECODERS  += h264_nvmpi hevc_nvmpi mpeg2_nvmpi mpeg4_nvmpi vp8_nvmpi vp9_nvmpi
+
+FFMPEG_DIFFS += ffmpeg_jetson.patch
+
+## NVIDIA LIB for "libnpp" 
+CONFIGURE_FFMPEG += --enable-nvmpi
+
+endif
+
+
+# ##############################################################################
 # VAAPI
 #
 
@@ -671,7 +688,6 @@ endif
 # ##############################################################################
 # FFMPEG
 #
-
 $(LIB_ROOT)/$(FFMPEG)/.tvh_download:
 	@mkdir -p $(EBUILDIR)
 	$(call DOWNLOAD,$(FFMPEG_URL),$(LIB_ROOT)/$(FFMPEG_TB),$(FFMPEG_SHA1))
