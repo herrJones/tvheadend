@@ -71,6 +71,14 @@ extern TVHCodec tvh_codec_nvenc_h264;
 extern TVHCodec tvh_codec_nvenc_hevc;
 #endif
 
+#if ENABLE_NVMPI
+extern TVHCodec tvh_codec_nvmpi_mpeg2;
+extern TVHCodec tvh_codec_nvmpi_h264;
+extern TVHCodec tvh_codec_nvmpi_hevc;
+extern TVHCodec tvh_codec_nvmpi_vp8;
+extern TVHCodec tvh_codec_nvmpi_vp9;
+#endif
+
 #if ENABLE_OMX
 extern TVHCodec tvh_codec_omx_h264;
 #endif
@@ -297,6 +305,15 @@ tvh_codecs_register()
     tvh_codec_register(&tvh_codec_nvenc_h264);
     tvh_codec_register(&tvh_codec_nvenc_hevc);
 #endif
+
+#if ENABLE_NVMPI
+    tvh_codec_register(&tvh_codec_nvmpi_mpeg2);
+    tvh_codec_register(&tvh_codec_nvmpi_h264);
+    tvh_codec_register(&tvh_codec_nvmpi_hevc);
+    tvh_codec_register(&tvh_codec_nvmpi_vp8);
+    tvh_codec_register(&tvh_codec_nvmpi_vp9);
+#endif
+
 
 #if ENABLE_OMX
     tvh_codec_register(&tvh_codec_omx_h264);
