@@ -530,6 +530,9 @@ endif
 ifeq ($(CONFIG_NVENC),yes)
 LIBS-CODECS += nvenc
 endif
+ifeq ($(CONFIG_JETSONNANO),yes)
+LIBS-CODECS += nvmpi
+endif
 ifeq ($(CONFIG_OMX),yes)
 LIBS-CODECS += omx
 endif
